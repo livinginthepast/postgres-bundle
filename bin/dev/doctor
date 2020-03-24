@@ -1,0 +1,50 @@
+#!/usr/bin/env bash
+
+source "bin/_support/cecho.sh"
+source "bin/_support/check.sh"
+source "bin/_support/step.sh"
+
+check "homebrew: up to date" \
+  "brew bundle check" \
+  "brew bundle"
+
+check "asdf: installed" \
+  "which asdf" \
+  "git clone https://github.com/asdf-vm/asdf.git ~/.asdf --branch v0.6.2 && echo -e '\n. $HOME/.asdf/asdf.sh' >> ~/.bash_profile && echo -e '\n. $HOME/.asdf/completions/asdf.bash' >> ~/.bash_profile && asdf update"
+
+check "asdf: erlang plugin installed" \
+  "asdf plugin-list | grep erlang" \
+  "asdf plugin-add erlang"
+
+check "asdf: elixir plugin installed" \
+  "asdf plugin-list | grep elixir" \
+  "asdf plugin-add elixir"
+
+check "asdf: postgres plugin installed" \
+  "asdf plugin-list | grep postgres" \
+  "asdf plugin-add postgres"
+
+check "asdf: tools are installed" \
+  "asdf which postgres > /dev/null" \
+  "asdf install"
+
+check "honcho supervisor installed" \
+  "mix archive | grep honcho_supervisor > /dev/null" \
+  "mix archive.install honcho_supervisor"
+
+check "honcho installed" \
+  "mix archive | grep honcho > /dev/null" \
+  "mix archive.install honcho"
+
+check "postgres : data dir exists" \
+  "test -d data/postgres" \
+  "initdb -D ./data/postgres -E \"UTF-8\" --lc-collate=\"en_US.UTF-8\" --lc-ctype=\"en_US.UTF-8\""
+
+check "postgres: running" \
+  "psql -l" \
+  "bin/dev/postgres # run in another tab"
+
+check "postgres: role exists" \
+  "psql -A -c '\du' postgres | grep 'postgres|'" \
+  "createuser -s postgres -U \$USER"
+
