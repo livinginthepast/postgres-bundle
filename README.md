@@ -7,4 +7,5 @@ This here is a bundle that uses the ASDF package manager to manage postgres.
 
 ```bash
 bin/dev/doctor
+mix honcho.start
 ```
