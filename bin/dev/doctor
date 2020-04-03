@@ -48,3 +48,6 @@ check "postgres: role exists" \
   "psql -A -c '\du' postgres | grep 'postgres|'" \
   "createuser -s postgres -U \$USER"
 
+check "postgis: installed" \
+  "psql -U postgres -A -c \"select * from pg_available_extensions where name = 'postgis'\" | grep postgis" \
+  "bin/dev/install-postgis"

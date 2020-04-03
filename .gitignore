@@ -1,3 +1,4 @@
 .doctor.out
 /data/
+/tmp/
 Brewfile.lock.json
