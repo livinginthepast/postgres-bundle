@@ -4,6 +4,24 @@ source "bin/_support/cecho.sh"
 source "bin/_support/check.sh"
 source "bin/_support/step.sh"
 
+check "direnv: installed" \
+  "which direnv" \
+  "brew install direnv"
+
+if [[ "${SHELL}" == "/bin/bash" ]]; then
+  check "direnv: installed in shell" \
+    "grep 'direnv hook bash' ~/.bash_profile" \
+    "echo 'eval \"$(direnv hook bash)\"' >> ~/.bash_profile"
+elif [[ "${SHELL}" == "/bin/zsh" ]]; then
+  check "direnv: installed in shell" \
+    "grep direnv ~/.zshrc" \
+    "sed 's/plugins=(/plugins=(direnv /' ~/.zshrc"
+fi
+
+check "direnv: .envrc file exists" \
+  "head .envrc" \
+  "cp .envrc.sample .envrc"
+
 check "homebrew: up to date" \
   "brew bundle check" \
   "brew bundle"
@@ -24,17 +42,21 @@ check "asdf: postgres plugin installed" \
   "asdf plugin-list | grep postgres" \
   "asdf plugin-add postgres"
 
+check "asdf: postgres plugin configuration" \
+  "diff ./vendor/.asdf-postgres-configure-options ${HOME}/.asdf-postgres-configure-options" \
+  "cp ./vendor/.asdf-postgres-configure-options ${HOME}/"
+
 check "asdf: tools are installed" \
   "asdf which postgres > /dev/null" \
   "asdf install"
 
 check "honcho supervisor installed" \
-  "mix archive | grep honcho_supervisor > /dev/null" \
-  "mix archive.install honcho_supervisor"
+  "mix archive | grep 'honcho_supervisor-' > /dev/null" \
+  "mix archive.install hex honcho_supervisor"
 
 check "honcho installed" \
-  "mix archive | grep honcho > /dev/null" \
-  "mix archive.install honcho"
+  "mix archive | grep 'honcho-' > /dev/null" \
+  "mix archive.install hex honcho"
 
 check "postgres : data dir exists" \
   "test -d data/postgres" \
@@ -48,6 +70,6 @@ check "postgres: role exists" \
   "psql -A -c '\du' postgres | grep 'postgres|'" \
   "createuser -s postgres -U \$USER"
 
-check "postgis: installed" \
+xcheck "postgis: installed" \
   "psql -U postgres -A -c \"select * from pg_available_extensions where name = 'postgis'\" | grep postgis" \
   "bin/dev/install-postgis"

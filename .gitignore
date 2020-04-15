@@ -1,4 +1,5 @@
 .doctor.out
+.envrc
 /data/
 /tmp/
 Brewfile.lock.json

@@ -25,3 +25,13 @@ check() {
     exit 1
   fi
 }
+
+xcheck() {
+  description=$1
+  command=$2
+  remedy=$3
+
+  cecho -n --yellow " [skipped] ${description}" --white "... "
+  cecho --green "OK"
+  return 0
+}

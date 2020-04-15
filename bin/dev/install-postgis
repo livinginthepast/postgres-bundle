@@ -6,22 +6,23 @@ source "bin/_support/cecho.sh"
 source "bin/_support/step.sh"
 
 POSTGRES_VERSION="$(postgres -V | cut -d' ' -f3)"
+POSTGIS_VERSION="3.0.1"
 
 step "make temp directory" \
   "mkdir -p tmp"
 
 step "download postgis tar file" \
-  "wget http://download.osgeo.org/postgis/source/postgis-3.0.1.tar.gz -O tmp/postgis-3.0.1.tar.gz"
+  "wget http://download.osgeo.org/postgis/source/postgis-${POSTGIS_VERSION}.tar.gz -O tmp/postgis-${POSTGIS_VERSION}.tar.gz"
 
 step "untar postgis" \
-  "(cd tmp && tar xzf postgis-3.0.1.tar.gz)"
+  "(cd tmp && tar xzf postgis-${POSTGIS_VERSION}.tar.gz)"
 
 step "configure postgis" \
-  "(cd tmp/postgis-3.0.1 && ./configure --prefix=\"/Users/sax/.asdf/installs/postgres/${POSTGRES_VERSION}\")"
+  "(cd tmp/postgis-${POSTGIS_VERSION} && ./configure --prefix=\"/Users/sax/.asdf/installs/postgres/${POSTGRES_VERSION}\")"
 
 step "make" \
-  "(cd tmp/postgis-3.0.1 && make)"
+  "(cd tmp/postgis-${POSTGIS_VERSION} && make)"
 
 step "make install" \
-  "(cd tmp/postgis-3.0.1 && make install)"
+  "(cd tmp/postgis-${POSTGIS_VERSION} && make install)"
 
