@@ -23,3 +23,12 @@ section() {
   title=$1
   cecho --yellow "\n${title}"
 }
+
+xstep() {
+  description=$1
+  command=$2
+
+  cecho -n --green "\n▸" --cyan "${description}:" --yellow "${YELLOW}${command}" --white "... "
+  cecho --yellow "[SKIPPED]"
+  return 0
+}
