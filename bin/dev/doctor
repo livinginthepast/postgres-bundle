@@ -15,7 +15,7 @@ if [[ "${SHELL}" == "/bin/bash" ]]; then
 elif [[ "${SHELL}" == "/bin/zsh" ]]; then
   check "direnv: installed in shell" \
     "grep direnv ~/.zshrc" \
-    "sed 's/plugins=(/plugins=(direnv /' ~/.zshrc"
+    "sed -i'' -e 's/plugins=(/plugins=(direnv /' ~/.zshrc"
 fi
 
 check "direnv: .envrc file exists" \

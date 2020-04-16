@@ -31,7 +31,7 @@ xcheck() {
   command=$2
   remedy=$3
 
-  cecho -n --yellow " [skipped] ${description}" --white "... "
-  cecho --green "OK"
+  cecho -n --yellow "[checking]  ${description}" --white "... "
+  cecho --yellow "SKIPPED"
   return 0
 }
