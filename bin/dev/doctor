@@ -18,10 +18,6 @@ elif [[ "${SHELL}" == "/bin/zsh" ]]; then
     "sed -i'' -e 's/plugins=(/plugins=(direnv /' ~/.zshrc"
 fi
 
-check "direnv: .envrc file exists" \
-  "head .envrc" \
-  "cp .envrc.sample .envrc"
-
 check "homebrew: up to date" \
   "brew bundle check" \
   "brew bundle"
@@ -42,7 +38,7 @@ check "asdf: postgres plugin installed" \
   "asdf plugin-list | grep postgres" \
   "asdf plugin-add postgres"
 
-check "asdf: postgres plugin configuration" \
+xcheck "asdf: postgres plugin configuration" \
   "diff ./bin/_vendor/.asdf-postgres-configure-options ${HOME}/.asdf-postgres-configure-options" \
   "cp ./bin/_vendor/.asdf-postgres-configure-options ${HOME}/"
 
@@ -64,7 +60,7 @@ check "postgres : data dir exists" \
 
 check "postgres: running" \
   "psql -l" \
-  "bin/dev/postgres # run in another tab"
+  "bin/dev/start # run in another tab"
 
 check "postgres: role exists" \
   "psql -A -c '\du' postgres | grep 'postgres|'" \
